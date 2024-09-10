@@ -24,7 +24,7 @@ public class ProducerAppConfiguration {
   @Bean
   public KeyValueAdapterResolver keyValueAdapterResolver(DaprClient daprClient, ObjectMapper mapper, DaprStateStoreProperties daprStatestoreProperties) {
     String storeName = daprStatestoreProperties.getName();
-    String bindingName = "kvbinding";
+    String bindingName = daprStatestoreProperties.getBinding();
 
     return new DaprKeyValueAdapterResolver(daprClient, mapper, storeName, bindingName);
   }

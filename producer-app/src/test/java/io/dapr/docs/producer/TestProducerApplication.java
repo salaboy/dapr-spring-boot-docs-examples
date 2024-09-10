@@ -15,6 +15,4 @@ public class TestProducerApplication {
             .run(args);
   }
 
-
-
 }

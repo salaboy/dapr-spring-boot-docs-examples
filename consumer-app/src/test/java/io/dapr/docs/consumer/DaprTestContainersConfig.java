@@ -3,24 +3,52 @@ package io.dapr.docs.consumer;
 import io.dapr.testcontainers.Component;
 import io.dapr.testcontainers.DaprContainer;
 import io.dapr.testcontainers.DaprLogLevel;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
+import org.testcontainers.DockerClientFactory;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @TestConfiguration(proxyBeanMethods = false)
 public class DaprTestContainersConfig {
 
+  @Bean
+  public Network getDaprNetwork() {
+    Network defaultDaprNetwork = new Network() {
+      @Override
+      public String getId() {
+        return "dapr-network";
+      }
 
-   @Bean
-   public Network daprNetwork(){
-     return Network.newNetwork();
-   }
+      @Override
+      public void close() {
+
+      }
+
+      @Override
+      public Statement apply(Statement base, Description description) {
+        return null;
+      }
+    };
+
+    List<com.github.dockerjava.api.model.Network> networks = DockerClientFactory.instance().client().listNetworksCmd().withNameFilter("dapr-network").exec();
+    if (networks.isEmpty()) {
+      Network.builder()
+              .createNetworkCmdModifier(cmd -> cmd.withName("dapr-network"))
+              .build().getId();
+      return defaultDaprNetwork;
+    } else {
+      return defaultDaprNetwork;
+    }
+  }
 
    @Bean
    public RabbitMQContainer rabbitMQContainer(Network daprNetwork){
