@@ -1,15 +1,17 @@
-package io.dapr.docs.producer;
-
-import org.springframework.data.annotation.Id;
+package io.dapr.docs.consumer;
 
 public class Order {
-
-  @Id
   private String id;
   private String item;
   private Integer amount;
 
   public Order() {
+  }
+
+  public Order(String id, String item, Integer amount) {
+    this.id = id;
+    this.item = item;
+    this.amount = amount;
   }
 
   public String getId() {

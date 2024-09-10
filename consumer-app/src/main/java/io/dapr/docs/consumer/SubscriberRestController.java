@@ -1,7 +1,8 @@
-package io.dapr.docs.producer;
+package io.dapr.docs.consumer;
 
 import io.dapr.Topic;
 import io.dapr.client.domain.CloudEvent;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,10 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class TestSubscriberRestController {
+public class SubscriberRestController {
 
   private List<CloudEvent> events = new ArrayList<>();
-
 
   @PostMapping("subscribe")
   @Topic(pubsubName = "pubsub", name = "topic")
@@ -23,8 +23,10 @@ public class TestSubscriberRestController {
     events.add(cloudEvent);
   }
 
+  @GetMapping("events")
   public List<CloudEvent> getAllEvents() {
     return events;
   }
+
 }
 
