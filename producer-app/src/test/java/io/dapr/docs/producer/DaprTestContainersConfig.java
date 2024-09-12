@@ -65,7 +65,7 @@ public class DaprTestContainersConfig {
       return new RabbitMQContainer(DockerImageName.parse("rabbitmq:3.7.25-management-alpine"))
               .withExposedPorts(5672)
               .withNetworkAliases("rabbitmq")
-              .withReuse(true)
+//              .withReuse(true)
               .withNetwork(daprNetwork);
 
    }
@@ -102,7 +102,7 @@ public class DaprTestContainersConfig {
              .withLogConsumer(outputFrame -> System.out.println(outputFrame.getUtf8String()))
              .withAppPort(8080)
              .withAppChannelAddress("host.testcontainers.internal")
-             .withReusablePlacement(true)
+//             .withReusablePlacement(true)
              .dependsOn(rabbitMQContainer)
              .dependsOn(postgreSQLContainer);
    }

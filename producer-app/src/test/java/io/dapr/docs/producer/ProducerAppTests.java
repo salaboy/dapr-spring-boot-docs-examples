@@ -61,6 +61,38 @@ class ProducerAppTests {
 						.then()
 						.statusCode(200).body("size()", is(1));
 
+		given()
+						.contentType(ContentType.JSON)
+						.when()
+						.queryParam("item", "the mars volta LP")
+						.get("/orders/byItem/")
+						.then()
+						.statusCode(200).body("size()", is(1));
+
+		given()
+						.contentType(ContentType.JSON)
+						.when()
+						.queryParam("item", "other")
+						.get("/orders/byItem/")
+						.then()
+						.statusCode(200).body("size()", is(0));
+
+		given()
+						.contentType(ContentType.JSON)
+						.when()
+						.queryParam("amount", 1)
+						.get("/orders/byAmount/")
+						.then()
+						.statusCode(200).body("size()", is(1));
+
+		given()
+						.contentType(ContentType.JSON)
+						.when()
+						.queryParam("amount", 2)
+						.get("/orders/byAmount/")
+						.then()
+						.statusCode(200).body("size()", is(0));
+
 	}
 
 }
