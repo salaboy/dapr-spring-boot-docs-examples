@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.2</version>
+		<version>3.2.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.dapr.docs.consume</groupId>
@@ -28,12 +28,16 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
-		<dapr-java-sdk.alpha-version>0.13.0-SNAPSHOT</dapr-java-sdk.alpha-version>
+		<dapr-java-sdk.alpha-version>0.14.0-SNAPSHOT</dapr-java-sdk.alpha-version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.dapr.spring</groupId>
