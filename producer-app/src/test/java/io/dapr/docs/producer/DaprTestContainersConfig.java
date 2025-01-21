@@ -91,7 +91,6 @@ public class DaprTestContainersConfig {
      rabbitMqProperties.put("user", "guest");
      rabbitMqProperties.put("password", "guest");
 
-
      return new DaprContainer("daprio/daprd:1.14.1")
              .withAppName("producer-app")
              .withNetwork(daprNetwork)

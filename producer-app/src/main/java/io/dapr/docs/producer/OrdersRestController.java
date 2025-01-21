@@ -25,6 +25,9 @@ public class OrdersRestController {
     return repository.findAll();
   }
 
+ 
+
+
   @GetMapping("/orders/byItem/")
   public Iterable<Order> getAllByItem(@RequestParam("item") String item){
     return repository.findByItem(item);
@@ -34,6 +37,8 @@ public class OrdersRestController {
   public Iterable<Order> getAllByItem(@RequestParam("amount") Integer amount){
     return repository.findByAmount(amount);
   }
+
+
 
 }
 

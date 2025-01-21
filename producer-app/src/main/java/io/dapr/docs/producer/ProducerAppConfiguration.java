@@ -39,4 +39,5 @@ public class ProducerAppConfiguration {
                                                              DaprPubSubProperties daprPubSubProperties) {
     return new DaprMessagingTemplate<>(daprClient, daprPubSubProperties.getName(), false);
   }
+
 }

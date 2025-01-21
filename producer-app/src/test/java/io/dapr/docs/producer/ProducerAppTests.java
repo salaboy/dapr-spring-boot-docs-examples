@@ -1,5 +1,8 @@
 package io.dapr.docs.producer;
 
+import io.dapr.docs.producer.workflow.CustomerFollowupActivity;
+import io.dapr.docs.producer.workflow.CustomerWorkflow;
+import io.dapr.docs.producer.workflow.RegisterCustomerActivity;
 import io.dapr.springboot.DaprAutoConfiguration;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -13,15 +16,21 @@ import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-@SpringBootTest(classes= {TestProducerApplication.class, DaprTestContainersConfig.class, DaprAutoConfiguration.class},
+@SpringBootTest(classes= {TestProducerApplication.class, DaprTestContainersConfig.class, 
+					DaprAutoConfiguration.class, CustomerWorkflow.class, CustomerFollowupActivity.class, 
+					RegisterCustomerActivity.class, CustomerStore.class},
 				webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class ProducerAppTests {
 
 	@Autowired
 	private TestSubscriberRestController controller;
+
+	@Autowired
+	private CustomersRestController customersRestController;
 
 	@BeforeAll
 	public static void setup(){
@@ -92,6 +101,43 @@ class ProducerAppTests {
 						.get("/orders/byAmount/")
 						.then()
 						.statusCode(200).body("size()", is(0));
+
+	}
+
+	@Test
+	void testCustomersWorkflows() throws InterruptedException, IOException {
+		assertNotNull(customersRestController.customerStore);
+		given()
+						.contentType(ContentType.JSON)
+						.body(
+										"""
+                    {
+                        "customerName": "salaboy"
+                    }
+                    """
+						)
+						.when()
+						.post("/customers/")
+						.then()
+						.statusCode(200);
+
+
+		assertEquals(1, customersRestController.customerStore.getCustomers().size());
+		Customer customer = customersRestController.customerStore.getCustomer("salaboy");
+		assertEquals(true, customer.isInCustomerDB());
+		String workflowId = customer.getWorkflowId();
+		given()
+						.contentType(ContentType.JSON)
+						.body("{ \"workflowId\": \""+workflowId+"\",\"customerName\": \"salaboy\" }")
+						.when()
+						.post("/customers/followup")
+						.then()
+						.statusCode(200);
+		
+		Thread.sleep(5000);
+
+		customer = customersRestController.customerStore.getCustomer("salaboy");
+		assertEquals(true, customer.isFollowUp());				
 
 	}
 
