@@ -30,7 +30,7 @@ class ProducerAppTests {
 	private TestSubscriberRestController controller;
 
 	@Autowired
-	private CustomersRestController customersRestController;
+	private CustomerStore customerStore;
 
 	@BeforeAll
 	public static void setup(){
@@ -106,7 +106,7 @@ class ProducerAppTests {
 
 	@Test
 	void testCustomersWorkflows() throws InterruptedException, IOException {
-		assertNotNull(customersRestController.customerStore);
+		assertNotNull(customerStore);
 		given()
 						.contentType(ContentType.JSON)
 						.body(
@@ -122,8 +122,8 @@ class ProducerAppTests {
 						.statusCode(200);
 
 
-		assertEquals(1, customersRestController.customerStore.getCustomers().size());
-		Customer customer = customersRestController.customerStore.getCustomer("salaboy");
+		assertEquals(1, customerStore.getCustomers().size());
+		Customer customer = customerStore.getCustomer("salaboy");
 		assertEquals(true, customer.isInCustomerDB());
 		String workflowId = customer.getWorkflowId();
 		given()
@@ -136,7 +136,7 @@ class ProducerAppTests {
 		
 		Thread.sleep(5000);
 
-		customer = customersRestController.customerStore.getCustomer("salaboy");
+		customer = customerStore.getCustomer("salaboy");
 		assertEquals(true, customer.isFollowUp());				
 
 	}

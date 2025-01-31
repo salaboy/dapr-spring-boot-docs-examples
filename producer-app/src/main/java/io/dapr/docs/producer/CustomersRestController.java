@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @EnableDaprWorkflows
 public class CustomersRestController {
 
-
   @Autowired
   private DaprWorkflowClient daprWorkflowClient;
 
-  public static CustomerStore customerStore = new CustomerStore();
+  @Autowired
+  private CustomerStore customerStore;
 
   @PostMapping("/customers/")
   public void trackCustomer(@RequestBody Customer customer){
