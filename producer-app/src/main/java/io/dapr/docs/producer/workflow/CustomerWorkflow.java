@@ -3,12 +3,13 @@ package io.dapr.docs.producer.workflow;
 import io.dapr.docs.producer.Customer;
 import io.dapr.workflows.Workflow;
 import io.dapr.workflows.WorkflowStub;
+import org.springframework.stereotype.Component;
+
 import java.time.Duration;
 
+@Component
 public class CustomerWorkflow implements Workflow{
-  
 
-  //Define your workflow as code 
   @Override
   public WorkflowStub create() {
     return ctx -> {
@@ -22,7 +23,6 @@ public class CustomerWorkflow implements Workflow{
       customer = ctx.callActivity(CustomerFollowupActivity.class.getName(), customer, Customer.class).await();
 
       ctx.complete(customer);
-
     };
   }
 }
