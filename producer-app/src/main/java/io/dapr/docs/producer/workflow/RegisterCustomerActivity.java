@@ -1,17 +1,20 @@
 package io.dapr.docs.producer.workflow;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import io.dapr.docs.producer.Customer;
 import io.dapr.docs.producer.CustomerStore;
 import io.dapr.workflows.WorkflowActivity;
 import io.dapr.workflows.WorkflowActivityContext;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RegisterCustomerActivity implements WorkflowActivity {
 
-    @Autowired
-    private CustomerStore customerStore;
+    private final CustomerStore customerStore;
+
+    public RegisterCustomerActivity(CustomerStore customerStore) {
+        this.customerStore = customerStore;
+    }
 
     @Override
     public Object run(WorkflowActivityContext ctx) {
