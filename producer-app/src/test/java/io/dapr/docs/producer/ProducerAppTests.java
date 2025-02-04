@@ -16,9 +16,11 @@ import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.awaitility.Awaitility.await;
+import java.time.Duration;
 
 @SpringBootTest(classes= {TestProducerApplication.class, DaprTestContainersConfig.class, 
 					DaprAutoConfiguration.class, CustomerWorkflow.class, CustomerFollowupActivity.class, 
@@ -124,6 +126,7 @@ class ProducerAppTests {
 
 		assertEquals(1, customerStore.getCustomers().size());
 		Customer customer = customerStore.getCustomer("salaboy");
+
 		assertEquals(true, customer.isInCustomerDB());
 		String workflowId = customer.getWorkflowId();
 		given()
@@ -134,10 +137,11 @@ class ProducerAppTests {
 						.then()
 						.statusCode(200);
 		
-		Thread.sleep(5000);
-
-		customer = customerStore.getCustomer("salaboy");
-		assertEquals(true, customer.isFollowUp());				
+		assertEquals(1, customerStore.getCustomers().size());
+		
+		await()
+          .atMost(Duration.ofSeconds(5))
+          .until(customerStore.getCustomer("salaboy")::isFollowUp, equalTo(true));
 
 	}
 

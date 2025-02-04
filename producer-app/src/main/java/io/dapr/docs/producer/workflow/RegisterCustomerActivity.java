@@ -19,8 +19,8 @@ public class RegisterCustomerActivity implements WorkflowActivity {
     @Override
     public Object run(WorkflowActivityContext ctx) {
         Customer customer = ctx.getInput(Customer.class);
-        System.out.println("Customer: " + customer + " registered.");
         customer.setInCustomerDB(true);
+        System.out.println("Customer: " + customer + " registered.");
         customerStore.addCustomer(customer);
         return customer;
     }

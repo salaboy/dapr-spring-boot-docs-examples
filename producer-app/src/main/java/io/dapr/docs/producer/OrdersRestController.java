@@ -25,9 +25,6 @@ public class OrdersRestController {
     return repository.findAll();
   }
 
- 
-
-
   @GetMapping("/orders/byItem/")
   public Iterable<Order> getAllByItem(@RequestParam("item") String item){
     return repository.findByItem(item);

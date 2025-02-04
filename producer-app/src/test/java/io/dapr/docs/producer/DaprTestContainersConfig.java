@@ -93,7 +93,7 @@ public class DaprTestContainersConfig {
      rabbitMqProperties.put("user", "guest");
      rabbitMqProperties.put("password", "guest");
 
-     return new DaprContainer("daprio/daprd:1.14.1")
+     return new DaprContainer("daprio/daprd:1.14.4")
              .withAppName("producer-app")
              .withNetwork(daprNetwork)
              .withComponent(new Component("kvstore", "state.postgresql", "v1", STATE_STORE_PROPERTIES))

@@ -30,5 +30,13 @@ public class Customer {
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
+    @Override
+    public String toString() {
+        return "Customer [customerName=" + customerName + ", workflowId=" + workflowId + ", inCustomerDB="
+                + inCustomerDB + ", followUp=" + followUp + "]";
+    }
+
+    
+
 
 }

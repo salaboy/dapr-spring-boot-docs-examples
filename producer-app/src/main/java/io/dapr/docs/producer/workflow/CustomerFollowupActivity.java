@@ -18,9 +18,11 @@ public class CustomerFollowupActivity implements WorkflowActivity {
     @Override
     public Object run(WorkflowActivityContext ctx) {
         Customer customer = ctx.getInput(Customer.class);
-        System.out.println("Customer: " + customer + " follow-up.");
+        //Let's get the hydrate the real customer from the CustomerStore
+        customer = customerStore.getCustomer(customer.getCustomerName());
         customer.setFollowUp(true);
         customerStore.addCustomer(customer);
+        System.out.println("Customer: " + customer + " follow-up.");
         return customer;
     }
     
